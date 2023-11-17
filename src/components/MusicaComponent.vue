@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="playMusic()">Play</button>
+    <button class="btn btn-danger" @click="playMusic()">Play</button>
   </div>
 </template>
 
