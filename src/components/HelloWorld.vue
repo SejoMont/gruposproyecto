@@ -1,58 +1,81 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <div>
+      <h2>Todos los Alumnos</h2>
+      <ul v-for="alumno in alumnos" :key="alumno.idAlumno">
+        <!-- <img :src="alumno.imagen" alt="alumno.imagen" /> -->
+          <li>{{ alumno.nombre }} {{ alumno.apellidos }}</li>
+      </ul>
+    </div>
+
+    <div v-if="gruposGenerados.length > 0">
+      <h2>Grupos Generados</h2>
+      <div ref="document">
+        <div v-for="(grupo, index) in gruposGenerados" :key="index" id="element">
+        <h3>Grupo {{ index + 1 }}</h3>
+        <ul v-for="alumno in grupo" :key="alumno.idAlumno">
+          <li>{{ alumno.nombre }} {{ alumno.apellidos }}</li>
+        </ul>
+        </div>
+      </div> 
+    </div>
+
+    <button @click="generarGrupos">Generar Grupos Aleatorios</button>
   </div>
 </template>
 
 <script>
+import music from './../assets/audio/champions.mp3'
+import html2pdf from 'html2pdf.js'
+
 export default {
-  name: 'HelloWorld',
+  name: "HelloWorld",
   props: {
-    msg: String
-  }
-}
+    msg: String,
+    alumnos: Array, // Nueva propiedad para recibir el array de alumnos
+  },
+  data() {
+    return {
+      gruposGenerados: [], // Almacena los grupos generados aleatoriamente
+    };
+  },
+  methods: {
+    generarGrupos() {
+      // Copia el array de alumnos y mézclalo para formar grupos aleatorios
+      this.playMusic()
+      const alumnosAleatorios = this.shuffleArray([...this.alumnos]);
+
+      // Divide los alumnos en grupos de 3
+      this.gruposGenerados = [];
+      for (let i = 0; i < alumnosAleatorios.length; i += 3) {
+        this.gruposGenerados.push(alumnosAleatorios.slice(i, i + 3));
+      }
+
+      this.exportToPdf(), {
+        filename: "prueba.pdf"
+      }
+    },
+    shuffleArray(array) {
+      // Función para mezclar aleatoriamente un array
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    },
+
+    playMusic(){
+      var audio = new Audio(music)
+      audio.play()
+    },
+
+    exportToPdf() {
+      html2pdf(document.getElementById('element'))
+    }
+  },
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+/* Puedes agregar estilos específicos para tu componente aquí */
 </style>
