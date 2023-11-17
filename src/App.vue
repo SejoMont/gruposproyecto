@@ -2,18 +2,15 @@
   <div>
     <!-- Pasa el array de alumnos al componente HelloWorld -->
     <HelloWorld :alumnos="alumnos" />
-    <MusicaComponent/>
   </div>
 </template>
 
 <script>
 import HelloWorld from "@/components/HelloWorld.vue"; // Ajusta la ruta según tu estructura de archivos
-import MusicaComponent from './components/MusicaComponent.vue';
 
 export default {
   components: {
-    HelloWorld,
-    MusicaComponent
+    HelloWorld
 
   },
   data() {
