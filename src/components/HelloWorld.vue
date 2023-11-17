@@ -8,14 +8,14 @@
       </ul>
     </div>
 
-    <div v-if="gruposGenerados.length > 0">
+    <div v-if="gruposGenerados.length > 0" ref="document">
       <h2>Grupos Generados</h2>
-      <div ref="document">
-        <div v-for="(grupo, index) in gruposGenerados" :key="index" id="element">
-        <h3>Grupo {{ index + 1 }}</h3>
-        <ul v-for="alumno in grupo" :key="alumno.idAlumno">
-          <li>{{ alumno.nombre }} {{ alumno.apellidos }}</li>
-        </ul>
+      <div id="element">
+        <div v-for="(grupo, index) in gruposGenerados" :key="index">
+          <h3>Grupo {{ index + 1 }}</h3>
+          <ul v-for="alumno in grupo" :key="alumno.idAlumno">
+            <li>{{ alumno.nombre }} {{ alumno.apellidos }}</li>
+          </ul>
         </div>
       </div> 
     </div>
