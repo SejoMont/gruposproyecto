@@ -1,17 +1,13 @@
 <template>
-  <MusicaComponent/>
   <home-alumnos-vue></home-alumnos-vue>
 </template>
 
 <script>
 import HomeAlumnosVue from './components/HomeAlumnos.vue'
-import MusicaComponent from './components/MusicaComponent.vue'
-HomeAlumnosVue
 
 export default {
   name: 'App',
   components: {
-    MusicaComponent,
     HomeAlumnosVue
   }
 }
