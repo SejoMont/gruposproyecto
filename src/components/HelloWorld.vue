@@ -3,22 +3,21 @@
     <div>
       <h2>Todos los Alumnos</h2>
       <ul v-for="alumno in alumnos" :key="alumno.idAlumno">
-        <!-- <img :src="alumno.imagen" alt="alumno.imagen" /> -->
-          <li>{{ alumno.nombre }} {{ alumno.apellidos }}</li>
+        <li>{{ alumno.nombre }} {{ alumno.apellidos }}</li>
       </ul>
     </div>
 
     <div v-if="gruposGenerados.length > 0">
       <h2>Grupos Generados</h2>
       <div v-for="(grupo, index) in gruposGenerados" :key="index">
-        <h3>Grupo {{ index + 1 }}</h3>
+        <h3>Equipo {{ index + 1 }}</h3>
         <ul v-for="alumno in grupo" :key="alumno.idAlumno">
           <li>{{ alumno.nombre }} {{ alumno.apellidos }}</li>
         </ul>
       </div>
     </div>
 
-    <button @click="generarGrupos">Generar Grupos Aleatorios</button>
+    <button @click="generarGrupos">Generar Equipos Aleatorios</button>
   </div>
 </template>
 
@@ -36,13 +35,19 @@ export default {
   },
   methods: {
     generarGrupos() {
-      // Copia el array de alumnos y mézclalo para formar grupos aleatorios
+      // Copia el array de alumnos y mézclalo para formar equipos aleatorios
       const alumnosAleatorios = this.shuffleArray([...this.alumnos]);
 
-      // Divide los alumnos en grupos de 3
+      // Divide los alumnos en equipos de 3
       this.gruposGenerados = [];
       for (let i = 0; i < alumnosAleatorios.length; i += 3) {
         this.gruposGenerados.push(alumnosAleatorios.slice(i, i + 3));
+      }
+
+      // Si el último grupo tiene solo un alumno, agrégalo al grupo anterior
+      if (this.gruposGenerados.length > 1 && this.gruposGenerados[this.gruposGenerados.length - 1].length === 1) {
+        const ultimoGrupo = this.gruposGenerados.pop();
+        this.gruposGenerados[this.gruposGenerados.length - 1] = this.gruposGenerados[this.gruposGenerados.length - 1].concat(ultimoGrupo);
       }
     },
     shuffleArray(array) {
@@ -58,5 +63,5 @@ export default {
 </script>
 
 <style scoped>
-/* Puedes agregar estilos específicos para tu componente aquí */
+  /* Puedes agregar estilos específicos para tu componente aquí */
 </style>
